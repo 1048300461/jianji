@@ -6,9 +6,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 
 public class Register extends AppCompatActivity {
 
+    EditText input_tele;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,5 +29,8 @@ public class Register extends AppCompatActivity {
         if(actionBar != null){
             actionBar.hide();
         }
+
+        input_tele = findViewById(R.id.tele_number);
+        input_tele.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
     }
 }
