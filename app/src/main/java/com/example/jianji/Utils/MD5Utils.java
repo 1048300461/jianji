@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5Utils {
+    //用户加密密码
     public static String md5Password(String password){
         StringBuilder sb = new StringBuilder();
         // 得到一个信息摘要器
