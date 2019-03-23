@@ -19,8 +19,12 @@ import com.example.jianji.R;
 import com.example.jianji.Utils.MD5Utils;
 import com.example.jianji.Utils.PhoneFormatCheckUtils;
 
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -75,20 +79,40 @@ public class RegisterActivity extends AppCompatActivity {
         sendver_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BmobSMS.requestSMSCode(input_tele.getText().toString().trim(),
-                        "jianji", new QueryListener<Integer>() {
+                //查找电话号码是否重复
+                BmobQuery<Myuser> query = new BmobQuery<Myuser>();
+                query.addWhereEqualTo("mobilePhoneNumber",input_tele.getText().toString().trim());
+                query.findObjects(new FindListener<Myuser>() {
                     @Override
-                    public void done(Integer smsId, BmobException e) {
+                    public void done(List<Myuser> list, BmobException e) {
                         if(e == null){
-                            //用于查询本次短信发送详情
-                            Log.i("smile","短信id：" + smsId);
-                            Toast.makeText(RegisterActivity.this,"发送成功",
-                                    Toast.LENGTH_SHORT).show();
+                            if(list.size() != 0){
+                                Toast.makeText(RegisterActivity.this,"该手机号已注册",
+                                        Toast.LENGTH_SHORT).show();
+                                return;
+                            }else {
+                                BmobSMS.requestSMSCode(input_tele.getText().toString().trim(),
+                                        "jianji", new QueryListener<Integer>() {
+                                            @Override
+                                            public void done(Integer smsId, BmobException e) {
+                                                if(e == null){
+                                                    //用于查询本次短信发送详情
+                                                    Log.i("smile","短信id：" + smsId);
+                                                    Toast.makeText(RegisterActivity.this,"发送成功",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }else{
+                                                    Log.i("smile", e.getErrorCode() + "-" + e.getMessage());
+                                                }
+                                            }
+                                        });
+                            }
+
                         }else{
-                            Log.i("smile", e.getErrorCode() + "-" + e.getMessage());
+                            Log.i("smile",e.getMessage());
                         }
                     }
                 });
+
             }
         });
         //注册用户
@@ -101,12 +125,11 @@ public class RegisterActivity extends AppCompatActivity {
                 tele = input_tele.getText().toString().trim();
                 telever = input_telever.getText().toString().trim();
 
-
                 result = PhoneFormatCheckUtils.isPhoneLegal(tele);
 
                 if(result && name.length() > 0 && password.length() >= 6 && telever.length() > 0){
                     final Myuser user = new Myuser();
-                    String code =
+
                     //对密码进行加密
                     password = MD5Utils.md5Password(password);
                     //添加用户信息
