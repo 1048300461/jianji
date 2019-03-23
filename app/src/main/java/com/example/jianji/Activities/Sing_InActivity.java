@@ -7,15 +7,26 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.jianji.DB.Myuser;
 import com.example.jianji.R;
+import com.example.jianji.Utils.MD5Utils;
+import com.example.jianji.Utils.PhoneFormatCheckUtils;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.LogInListener;
 
 public class Sing_InActivity extends AppCompatActivity {
 
     private Button loginBtn;
     private ImageButton backBtn;
+    private EditText input_tele,input_password;
+    String tele,password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +49,49 @@ public class Sing_InActivity extends AppCompatActivity {
         }
 
         loginBtn = (Button) findViewById(R.id.login_btn);
+        input_tele = (EditText) findViewById(R.id.user_tel);
+        input_password = (EditText) findViewById(R.id.password);
+        //设置成数字键盘
+        input_tele.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+
         backBtn = (ImageButton) findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Sing_InActivity.this,MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                tele = input_tele.getText().toString().trim();
+                password = input_password.getText().toString().trim();
+                //检测用户手机号是否合法
+                Boolean result = PhoneFormatCheckUtils.isPhoneLegal(tele);
+                if(!result){
+                    Toast.makeText(Sing_InActivity.this,"手机号不合法",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    password = MD5Utils.md5Password(password);
+                    Myuser.loginByAccount(tele, password, new LogInListener<Myuser>() {
+                        @Override
+                        public void done(Myuser myuser, BmobException e) {
+                            if(myuser != null){
+                                Intent intent = new Intent(Sing_InActivity.this,MainMenuActivity.class);
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(Sing_InActivity.this,"用户名与密码不匹配",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
+
             }
         });
 

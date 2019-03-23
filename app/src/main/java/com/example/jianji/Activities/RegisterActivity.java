@@ -142,6 +142,8 @@ public class RegisterActivity extends AppCompatActivity {
                             if(e == null){
                                 Toast.makeText(RegisterActivity.this,"注册成功",
                                         Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(RegisterActivity.this,MainMenuActivity.class);
+                                startActivity(intent);
                                 Log.i("smile",user.getUsername() + "-" + user.getObjectId());
                             }else{
                                 Toast.makeText(RegisterActivity.this,"注册失败",
@@ -151,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
 
                 }else{
-                    //不符合规范
+                    //输入信息不符合规范
                     if(result == false){
                         Toast.makeText(RegisterActivity.this,"手机号格式错误",
                                 Toast.LENGTH_SHORT).show();
