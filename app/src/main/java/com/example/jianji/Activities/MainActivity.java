@@ -1,6 +1,5 @@
-package com.example.jianji;
+package com.example.jianji.Activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -10,6 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.jianji.R;
+
+import cn.bmob.v3.Bmob;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button sign_in,register;
@@ -17,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //Bmob初始化
+        Bmob.initialize(this, "de04c6d94ab157d81d673c9e071c99cd");
         if(Build.VERSION.SDK_INT >= 21){
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Sing_In.class);
+                Intent intent = new Intent(MainActivity.this, Sing_InActivity.class);
                 startActivity(intent);
 
             }
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Register.class);
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
