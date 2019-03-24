@@ -28,20 +28,21 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText input_tele,input_name,input_password,input_telever;
+    EditText input_tele, input_name, input_password, input_telever;
     private ImageButton backBtn;
-    private Button create_btn,sendver_btn;
+    private Button create_btn, sendver_btn;
     //昵称，电话，密码
-    String name,tele,password,telever;
+    String name, tele, password, telever;
     private boolean result;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        if(Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -51,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(Color.TRANSPARENT);
         }
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.hide();
         }
 
@@ -68,57 +69,57 @@ public class RegisterActivity extends AppCompatActivity {
         input_telever.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
 
         //放回上一个页面
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        backBtn.setOnClickListener(this);
         //发送验证码
-        sendver_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        sendver_btn.setOnClickListener(this);
+        //注册用户
+        create_btn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.sendver_btn:
                 //查找电话号码是否重复
                 BmobQuery<Myuser> query = new BmobQuery<Myuser>();
-                query.addWhereEqualTo("mobilePhoneNumber",input_tele.getText().toString().trim());
+                query.addWhereEqualTo("mobilePhoneNumber", input_tele.getText().toString().trim());
                 query.findObjects(new FindListener<Myuser>() {
                     @Override
                     public void done(List<Myuser> list, BmobException e) {
-                        if(e == null){
-                            if(list.size() != 0){
-                                Toast.makeText(RegisterActivity.this,"该手机号已注册",
+                        if (e == null) {
+                            if (list.size() != 0) {
+                                //手机号已存在
+                                Toast.makeText(RegisterActivity.this, "该手机号已注册",
                                         Toast.LENGTH_SHORT).show();
                                 return;
-                            }else {
+                            } else {
+                                //手机号不存在就发送验证码
                                 BmobSMS.requestSMSCode(input_tele.getText().toString().trim(),
                                         "jianji", new QueryListener<Integer>() {
                                             @Override
                                             public void done(Integer smsId, BmobException e) {
-                                                if(e == null){
+                                                if (e == null) {
                                                     //用于查询本次短信发送详情
-                                                    Log.i("smile","短信id：" + smsId);
-                                                    Toast.makeText(RegisterActivity.this,"发送成功",
+                                                    Log.i("smile", "短信id：" + smsId);
+                                                    Toast.makeText(RegisterActivity.this, "发送成功",
                                                             Toast.LENGTH_SHORT).show();
-                                                }else{
+                                                } else {
                                                     Log.i("smile", e.getErrorCode() + "-" + e.getMessage());
                                                 }
                                             }
                                         });
                             }
 
-                        }else{
-                            Log.i("smile",e.getMessage());
+                        } else {
+                            Log.i("smile", e.getMessage());
                         }
                     }
                 });
-
-            }
-        });
-        //注册用户
-        create_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.create_btn:
                 //去掉首位空格，防止不必要的错误
                 name = input_name.getText().toString().trim();
                 password = input_password.getText().toString();
@@ -127,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 result = PhoneFormatCheckUtils.isPhoneLegal(tele);
 
-                if(result && name.length() > 0 && password.length() >= 6 && telever.length() > 0){
+                if (result && name.length() > 0 && password.length() >= 6 && telever.length() > 0) {
                     final Myuser user = new Myuser();
 
                     //对密码进行加密
@@ -139,45 +140,45 @@ public class RegisterActivity extends AppCompatActivity {
                     user.signOrLogin(telever, new SaveListener<Myuser>() {
                         @Override
                         public void done(Myuser myuser, BmobException e) {
-                            if(e == null){
-                                Toast.makeText(RegisterActivity.this,"注册成功",
+                            if (e == null) {
+                                Toast.makeText(RegisterActivity.this, "注册成功",
                                         Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(RegisterActivity.this,MainMenuActivity.class);
+                                Intent intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
                                 startActivity(intent);
-                                Log.i("smile",user.getUsername() + "-" + user.getObjectId());
-                            }else{
-                                Toast.makeText(RegisterActivity.this,"注册失败",
+                                Log.i("smile", user.getUsername() + "-" + user.getObjectId());
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "注册失败",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
 
-                }else{
+                } else {
                     //输入信息不符合规范
-                    if(result == false){
-                        Toast.makeText(RegisterActivity.this,"手机号格式错误",
+                    if (result == false) {
+                        Toast.makeText(RegisterActivity.this, "手机号格式错误",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(name.length() == 0){
-                        Toast.makeText(RegisterActivity.this,"昵称不能为空",
+                    if (name.length() == 0) {
+                        Toast.makeText(RegisterActivity.this, "昵称不能为空",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(password.length() < 6){
-                        Toast.makeText(RegisterActivity.this,"密码长度需大于6",
+                    if (password.length() < 6) {
+                        Toast.makeText(RegisterActivity.this, "密码长度需大于6",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(telever.length() == 0){
-                        Toast.makeText(RegisterActivity.this,"请输入验证码",
+                    if (telever.length() == 0) {
+                        Toast.makeText(RegisterActivity.this, "请输入验证码",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
-
-
-            }
-        });
+                break;
+            default:
+                break;
+        }
     }
 }

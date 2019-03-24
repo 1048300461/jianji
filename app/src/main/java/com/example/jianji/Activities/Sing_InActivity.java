@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -21,19 +22,19 @@ import com.example.jianji.Utils.PhoneFormatCheckUtils;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
 
-public class Sing_InActivity extends AppCompatActivity {
+public class Sing_InActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button loginBtn;
     private ImageButton backBtn;
-    private EditText input_tele,input_password;
-    String tele,password;
+    private EditText input_tele, input_password;
+    String tele, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing__in);
 
-        if(Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -44,7 +45,7 @@ public class Sing_InActivity extends AppCompatActivity {
         }
 
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.hide();
         }
 
@@ -55,45 +56,52 @@ public class Sing_InActivity extends AppCompatActivity {
         input_tele.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
 
         backBtn = (ImageButton) findViewById(R.id.back);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Sing_InActivity.this,MainActivity.class);
+        backBtn.setOnClickListener(this);
+
+        loginBtn.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                Intent intent = new Intent(Sing_InActivity.this, MainActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+                break;
+            case R.id.login_btn:
                 tele = input_tele.getText().toString().trim();
                 password = input_password.getText().toString().trim();
                 //检测用户手机号是否合法
                 Boolean result = PhoneFormatCheckUtils.isPhoneLegal(tele);
-                if(!result){
-                    Toast.makeText(Sing_InActivity.this,"手机号不合法",
+                if (!result) {
+                    Toast.makeText(Sing_InActivity.this, "手机号不合法",
                             Toast.LENGTH_SHORT).show();
                     return;
-                }else{
-                    password = MD5Utils.md5Password(password);
-                    Myuser.loginByAccount(tele, password, new LogInListener<Myuser>() {
-                        @Override
-                        public void done(Myuser myuser, BmobException e) {
-                            if(myuser != null){
-                                Intent intent = new Intent(Sing_InActivity.this,MainMenuActivity.class);
-                                startActivity(intent);
-                            }else{
-                                Toast.makeText(Sing_InActivity.this,"用户名与密码不匹配",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
                 }
-
-
-            }
-        });
-
+                //密码输入框为空
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(Sing_InActivity.this, "请输入密码",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //将输入的密码也进行md5加密来判断密码是否与手机号匹配
+                password = MD5Utils.md5Password(password);
+                Myuser.loginByAccount(tele, password, new LogInListener<Myuser>() {
+                    @Override
+                    public void done(Myuser myuser, BmobException e) {
+                        if (myuser != null) {
+                            Intent intent = new Intent(Sing_InActivity.this, MainMenuActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(Sing_InActivity.this, "用户名与密码不匹配",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            default:
+                break;
+        }
     }
 }
