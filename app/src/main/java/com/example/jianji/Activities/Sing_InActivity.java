@@ -19,9 +19,13 @@ import com.example.jianji.R;
 import com.example.jianji.Utils.MD5Utils;
 import com.example.jianji.Utils.PhoneFormatCheckUtils;
 
+import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
-
+/**
+*   登入界面
+ */
 public class Sing_InActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button loginBtn;
@@ -91,7 +95,7 @@ public class Sing_InActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void done(Myuser myuser, BmobException e) {
                         if (myuser != null) {
-                            Intent intent = new Intent(Sing_InActivity.this, MainMenuActivity.class);
+                            Intent intent = new Intent(Sing_InActivity.this, chatActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(Sing_InActivity.this, "用户名与密码不匹配",

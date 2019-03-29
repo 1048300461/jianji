@@ -19,8 +19,10 @@ import com.example.jianji.R;
 import com.example.jianji.Utils.MD5Utils;
 import com.example.jianji.Utils.PhoneFormatCheckUtils;
 
+import java.security.PublicKey;
 import java.util.List;
 
+import cn.bmob.newim.BmobIM;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.exception.BmobException;
@@ -28,8 +30,12 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 
+/**
+ * 注册界面
+ */
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public EditText in;
     EditText input_tele, input_name, input_password, input_telever;
     private ImageButton backBtn;
     private Button create_btn, sendver_btn;
