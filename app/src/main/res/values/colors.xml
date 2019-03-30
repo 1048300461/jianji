@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#00574b</color>
     <color name="colorAccent">#D81B60</color>
     <color name="black">#666666</color>
+    <color name="text_gray">#bdbcbc</color>
+    <color name="text_darkgray">#FF7E7D7D</color>
 </resources>
 
 

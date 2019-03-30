@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jianji">
+
     <!-- 允许联网 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 获取GSM（2g）、WCDMA（联通3g）等网络状态的信息 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 获取wifi网络状态的信息 -->
@@ -18,9 +19,9 @@
         android:theme="@style/AppTheme">
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.example.jianji.BmobContentProvider">
-        </provider>
-        <activity android:name=".Activities.MainMenuActivity"></activity>
+            android:authorities="com.example.jianji.BmobContentProvider"></provider>
+
+        <activity android:name=".Activities.MainMenuActivity" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name=".Activities.Sing_InActivity" />
         <activity android:name=".Activities.MainActivity">
@@ -30,6 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activities.UserMainActivity"></activity>
     </application>
 
 </manifest>
