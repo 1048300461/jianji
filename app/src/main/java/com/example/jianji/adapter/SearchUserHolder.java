@@ -9,10 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.jianji.Activities.UserInfoActivity;
 import com.example.jianji.DB.Myuser;
 import com.example.jianji.R;
 
+import butterknife.BindView;
+
 public class SearchUserHolder extends BaseViewHolder{
+
 
     public ImageView avatar;
 
@@ -27,7 +31,9 @@ public class SearchUserHolder extends BaseViewHolder{
     @Override
     public void bindData(Object o) {
         final Myuser user =(Myuser)o;
-        ImageLoaderFactory.getLoader().loadAvator(avatar,user.getAvatar(), R.mipmap.head);
+        //问题
+        Glide.with(getContext()).load(user.getAvatar()).load(avatar);
+
         name.setText(user.getUsername());
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override

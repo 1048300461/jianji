@@ -23,7 +23,7 @@ import java.util.List;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
-public class chatActivity extends AppCompatActivity  {
+public class FriendActivity extends AppCompatActivity  {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<Chat_friend> friendList = new ArrayList<>();
@@ -36,7 +36,7 @@ public class chatActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_friend);
 
         addFriend_btn = findViewById(R.id.addFriend_btn);
         addFriend_edit = findViewById(R.id.addFriend_edit);
@@ -68,7 +68,7 @@ public class chatActivity extends AppCompatActivity  {
     private void query() {
         String name = addFriend_edit.getText().toString();
         if(TextUtils.isEmpty(name)){
-            Toast.makeText(chatActivity.this,"请填写用户名",
+            Toast.makeText(FriendActivity.this,"请填写用户名",
                     Toast.LENGTH_SHORT).show();
             swipeRefreshLayout.setRefreshing(false);
             return;
@@ -79,7 +79,12 @@ public class chatActivity extends AppCompatActivity  {
                     public void done(List<Myuser> list, BmobException e) {
                         if (e == null) {
                             swipeRefreshLayout.setRefreshing(false);
-                            Toast.makeText(chatActivity.this,list.get(0).getUsername(),
+                            StringBuilder s = new StringBuilder();
+                            for (Myuser myuser : list) {
+                                s.append(myuser.getUsername());
+                            }
+                            s.toString();
+                            Toast.makeText(FriendActivity.this,s,
                                     Toast.LENGTH_SHORT).show();
                             //adapter.setDatas(list);
                             //adapter.notifyDataSetChanged();
