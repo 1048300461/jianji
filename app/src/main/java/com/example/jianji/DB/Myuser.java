@@ -1,16 +1,19 @@
 package com.example.jianji.DB;
 
-import android.content.Intent;
-
-import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
 
 public class Myuser extends BmobUser {
 
     private Boolean sex;
-    private String nick;
+    private String avatar;
     private Integer age;
+    public Myuser(){}
 
+    public Myuser(NewFriend friend){
+        setObjectId(friend.getUid());
+        setUsername(friend.getName());
+        setAvatar(friend.getAvatar());
+    }
 
     public Boolean getSex() {
         return sex;
@@ -20,13 +23,6 @@ public class Myuser extends BmobUser {
         this.sex = sex;
     }
 
-    public String getNick() {
-        return nick;
-    }
-
-    public void setNick(String nick) {
-        this.nick = nick;
-    }
 
     public Integer getAge() {
         return age;
@@ -34,5 +30,13 @@ public class Myuser extends BmobUser {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
