@@ -23,6 +23,7 @@
         <activity android:name=".Activities.MainMenuActivity"></activity>
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name=".Activities.Sing_InActivity" />
+        <activity android:name=".Activities.UserMainActivity"/>
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -17,6 +17,7 @@ import cn.bmob.v3.Bmob;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Button testBtn;
     private Button sign_in,register;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        testBtn = findViewById(R.id.test_btn);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UserMainActivity.class);
                 startActivity(intent);
             }
         });
