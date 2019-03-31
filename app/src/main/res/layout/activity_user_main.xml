@@ -6,6 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".Activities.UserMainActivity">
 
+    <RelativeLayout
+        android:id="@+id/ly_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/text_darkgray"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/rg_user_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="12dp"
+            tools:ignore="RelativeOverlap,RtlHardcoded" />
+    </RelativeLayout>
+
     <RadioGroup
         android:id="@+id/rg_tab_bar"
         android:layout_width="match_parent"
@@ -23,20 +44,20 @@
         <RadioButton
             android:id="@+id/rb_message"
             style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_folder"
-            android:text="文件夹" />
+            android:drawableTop="@drawable/tab_menu_me"
+            android:text="群组" />
 
         <RadioButton
             android:id="@+id/rb_better"
             style="@style/tab_menu_item"
             android:drawableTop="@drawable/tab_menu_collect"
-            android:text="收藏" />
+            android:text="大厅" />
 
         <RadioButton
             android:id="@+id/rb_setting"
             style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_me"
-            android:text="我的" />
+            android:drawableTop="@drawable/tab_menu_folder"
+            android:text="文件夹" />
     </RadioGroup>
 
     <View
@@ -51,5 +72,6 @@
         android:id="@+id/vpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/div_tab_bar" />
+        android:layout_above="@id/div_tab_bar"
+        android:layout_below="@id/ly_top_bar"/>
 </RelativeLayout>
