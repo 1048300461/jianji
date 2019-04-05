@@ -10,7 +10,7 @@
 
     <com.example.jianji.adapter.SwipeCardRecyclerView
         android:id="@+id/swipeCardRecyclerView"
-        android:layout_width="150dp"
-        android:layout_height="200dp">
+        android:layout_width="200dp"
+        android:layout_height="240dp">
     </com.example.jianji.adapter.SwipeCardRecyclerView>
 </LinearLayout>
